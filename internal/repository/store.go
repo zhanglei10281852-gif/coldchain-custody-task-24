@@ -98,16 +98,6 @@ type ShipmentFilter struct {
 	To            *time.Time
 }
 
-func (f ShipmentFilter) CountFilter() ShipmentFilter {
-	copy := f
-	copy.Page = PageRequest{}
-	copy.State = ""
-	if copy.StudyID == "" {
-		copy.OriginSiteID = f.OriginSiteID
-	}
-	return copy
-}
-
 type ShipmentPage struct {
 	Items []domain.Shipment
 	Total int

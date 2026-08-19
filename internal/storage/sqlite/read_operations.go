@@ -123,9 +123,8 @@ func (q *queries) CountSiteShipmentsForBusinessDay(ctx context.Context, siteID, 
 func (q *queries) ListShipments(ctx context.Context, filter repository.ShipmentFilter) (repository.ShipmentPage, error) {
 	page := filter.Page.Normalize(200)
 	where, args := buildShipmentWhere(filter)
-	countWhere, countArgs := buildShipmentWhere(filter.CountFilter())
 	var total int
-	if err := q.q.QueryRowContext(ctx, `SELECT COUNT(*) FROM shipments`+countWhere, countArgs...).Scan(&total); err != nil {
+	if err := q.q.QueryRowContext(ctx, `SELECT COUNT(*) FROM shipments`+where, args...).Scan(&total); err != nil {
 		return repository.ShipmentPage{}, translateError("count shipments", err)
 	}
 	sortColumn := shipmentSortColumn(page.Sort)
